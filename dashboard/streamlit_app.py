@@ -405,13 +405,24 @@ CHURN_COLORS = {'Retained': '#444444', 'Churned': '#ffffff'}
 # ── DB & Model ────────────────────────────────────────────────────────────────
 @st.cache_resource
 def get_engine():
-    DB_USER = os.getenv("DB_USER")
-    DB_PASSWORD = os.getenv("DB_PASSWORD").replace("@", "%40")
-    DB_HOST = os.getenv("DB_HOST")
-    DB_PORT = os.getenv("DB_PORT")
-    DB_NAME = os.getenv("DB_NAME")
+    import streamlit as st
+    try:
+        # Streamlit Cloud — use secrets
+        DB_USER = st.secrets["DB_USER"]
+        DB_PASSWORD = st.secrets["DB_PASSWORD"].replace("@", "%40")
+        DB_HOST = st.secrets["DB_HOST"]
+        DB_PORT = st.secrets["DB_PORT"]
+        DB_NAME = st.secrets["DB_NAME"]
+    except:
+        # Local — use .env
+        DB_USER = os.getenv("DB_USER")
+        DB_PASSWORD = os.getenv("DB_PASSWORD").replace("@", "%40")
+        DB_HOST = os.getenv("DB_HOST")
+        DB_PORT = os.getenv("DB_PORT")
+        DB_NAME = os.getenv("DB_NAME")
+
     return create_engine(
-        f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
     )
 
 @st.cache_data
