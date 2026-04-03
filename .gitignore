@@ -27,15 +27,13 @@ build/
 *.ipynb_checkpoints
 
 # ── ML Models & Large Files ───────────────────────────────────────────────────
-*.pkl
+# NOTE: src/best_model.pkl and src/scaler.pkl ARE committed (needed for Streamlit Cloud)
 *.h5
 *.keras
 *.onnx
 *.pt
 *.pth
 *.bin
-src/best_model.pkl
-src/scaler.pkl
 
 # ── Data Files ────────────────────────────────────────────────────────────────
 data/*.csv
