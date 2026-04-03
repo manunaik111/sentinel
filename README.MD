@@ -2,13 +2,13 @@
 
 > *Predict churn. Retain customers. Ship ML that works.*
 
-![Python](https://img.shields.io/badge/Python-3.11-white?style=flat-square&logo=python&logoColor=white&labelColor=000000&color=111111)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-white?style=flat-square&logo=fastapi&logoColor=white&labelColor=000000&color=111111)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.35-white?style=flat-square&logo=streamlit&logoColor=white&labelColor=000000&color=111111)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-white?style=flat-square&logo=postgresql&logoColor=white&labelColor=000000&color=111111)
-![Docker](https://img.shields.io/badge/Docker-29.3-white?style=flat-square&logo=docker&logoColor=white&labelColor=000000&color=111111)
-![XGBoost](https://img.shields.io/badge/XGBoost-2.0-white?style=flat-square&logo=xgboost&logoColor=white&labelColor=000000&color=111111)
-![AUC](https://img.shields.io/badge/AUC-0.846-white?style=flat-square&labelColor=000000&color=111111)
+![Python](https://img.shields.io/badge/Python-3.11-white?style=for-the-badge&logo=python&logoColor=white&labelColor=000000&color=111111)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.111-white?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=000000&color=111111)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.35-white?style=for-the-badge&logo=streamlit&logoColor=white&labelColor=000000&color=111111)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-white?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=000000&color=111111)
+![Docker](https://img.shields.io/badge/Docker-29.3-white?style=for-the-badge&logo=docker&logoColor=white&labelColor=000000&color=111111)
+![XGBoost](https://img.shields.io/badge/XGBoost-2.0-white?style=for-the-badge&logo=xgboost&logoColor=white&labelColor=000000&color=111111)
+![AUC](https://img.shields.io/badge/AUC-0.846-white?style=for-the-badge&labelColor=000000&color=111111)
 
 ---
 
