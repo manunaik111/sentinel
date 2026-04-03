@@ -332,7 +332,7 @@ seaborn==0.13.2
 
 <div align="center">
 
-**Manu Naik** · Portfolio project · June 2026 · ₹350–500k CTC target
+**Manu Naik** 
 
 *Sentinel — Know who's leaving before they do.*
 
