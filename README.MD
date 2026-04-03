@@ -14,6 +14,10 @@
 ![AUC](https://img.shields.io/badge/AUC-0.846-000000?style=flat-square)
 ![Neon](https://img.shields.io/badge/Neon-DB-000000?style=flat-square)
 
+<br>
+
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-sentinel002.streamlit.app-000000?style=for-the-badge&logo=streamlit&logoColor=white)](https://sentinel002.streamlit.app/)
+
 </div>
 
 ---
