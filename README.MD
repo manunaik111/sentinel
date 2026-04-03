@@ -142,7 +142,7 @@ Sentinel/
 ### 1. Clone & Setup
 
 ```bash
-git clone https://github.com/yourusername/sentinel.git
+git clone https://github.com/manunaik111/sentinel.git
 cd sentinel
 
 python -m venv .venv
