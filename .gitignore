@@ -1,0 +1,70 @@
+# ── Virtual Environment ───────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment Variables (secrets!) ─────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# ── Jupyter Notebooks ─────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── ML Models & Large Files ───────────────────────────────────────────────────
+*.pkl
+*.h5
+*.keras
+*.onnx
+*.pt
+*.pth
+*.bin
+src/best_model.pkl
+src/scaler.pkl
+
+# ── Data Files ────────────────────────────────────────────────────────────────
+data/*.csv
+data/*.parquet
+data/*.json
+data/*.xlsx
+data/*.db
+data/*.sqlite
+
+# ── Streamlit ─────────────────────────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+# (Dockerfile and .dockerignore are kept — only ignore build artifacts)
+docker-compose.override.yml
+
+# ── OS & Editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Logs & Temp ───────────────────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak
+logs/
+tmp/

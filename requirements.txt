@@ -1,0 +1,28 @@
+# Data & ETL
+pandas==2.2.2
+numpy==1.26.4
+sqlalchemy==2.0.30
+psycopg2-binary==2.9.9
+
+# ML
+scikit-learn==1.4.2
+xgboost==2.0.3
+joblib==1.4.2
+
+# API
+fastapi==0.111.0
+uvicorn==0.29.0
+pydantic==2.7.1
+
+# Dashboard
+streamlit==1.35.0
+plotly==5.22.0
+
+# Testing
+pytest==8.2.0
+httpx==0.27.0
+
+# Utilities
+python-dotenv==1.0.1
+jupyter==1.0.0
+ipykernel==6.29.4
