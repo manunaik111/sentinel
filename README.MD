@@ -1,14 +1,20 @@
-# Sentinel — End-to-End Customer Retention Engine
+<div align="center">
 
-> *Predict churn. Retain customers. Ship ML that works.*
+# Sentinel
+### End-to-End Customer Retention Engine
 
-![Python](https://img.shields.io/badge/Python-3.11-white?style=for-the-badge&logo=python&logoColor=white&labelColor=000000&color=111111)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-white?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=000000&color=111111)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.35-white?style=for-the-badge&logo=streamlit&logoColor=white&labelColor=000000&color=111111)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-white?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=000000&color=111111)
-![Docker](https://img.shields.io/badge/Docker-29.3-white?style=for-the-badge&logo=docker&logoColor=white&labelColor=000000&color=111111)
-![XGBoost](https://img.shields.io/badge/XGBoost-2.0-white?style=for-the-badge&logo=xgboost&logoColor=white&labelColor=000000&color=111111)
-![AUC](https://img.shields.io/badge/AUC-0.846-white?style=for-the-badge&labelColor=000000&color=111111)
+*Predict churn. Retain customers. Ship ML that works.*
+
+![Python](https://img.shields.io/badge/Python-3.11-000000?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.111-000000?style=flat-square&logo=fastapi&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.35-000000?style=flat-square&logo=streamlit&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-000000?style=flat-square&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-29.3-000000?style=flat-square&logo=docker&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-2.0-000000?style=flat-square&logo=xgboost&logoColor=white)
+![AUC](https://img.shields.io/badge/AUC-0.846-000000?style=flat-square)
+![Neon](https://img.shields.io/badge/Neon-DB-000000?style=flat-square)
+
+</div>
 
 ---
 
@@ -20,73 +26,78 @@ Sentinel is a production-grade **customer churn prediction system** built on the
 
 ---
 
-## Live Demo
+## Key Numbers
 
-| Interface | URL |
+| Metric | Value |
 |---|---|
-| Streamlit Dashboard | `http://localhost:8501` |
-| FastAPI Swagger UI | `http://localhost:8000/docs` |
-| Health Check | `http://localhost:8000/health` |
+| Dataset | 7,043 customers · 21 features |
+| Churn Rate | 26.5% (1,869 churned) |
+| Best Model AUC | **0.846** — Logistic Regression |
+| Churn Recall | **78%** on test set |
+| DB | Neon PostgreSQL (cloud) |
+| Deployment | Streamlit Cloud + Docker |
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        Sentinel                             │
-│                                                             │
-│   CSV Data                                                  │
-│      │                                                      │
-│      ▼                                                      │
-│   PostgreSQL ──► Python Pipeline ──► Trained Model (.pkl)   │
-│      │                │                      │              │
-│      │           EDA Notebook           FastAPI API         │
-│      │                                        │              │
-│      └──────────────────────────► Streamlit Dashboard       │
-│                                                             │
-│   [ All containerized via Docker ]                          │
-└─────────────────────────────────────────────────────────────┘
+CSV Data
+   │
+   ▼
+PostgreSQL (Neon Cloud)
+   │
+   ▼
+Python Pipeline ──────────────► Trained Model (.pkl)
+   │                                    │
+   ▼                                    ▼
+EDA Notebook                      FastAPI API
+(01_EDA.ipynb)                   /predict endpoint
+                                        │
+                                        ▼
+                              Streamlit Dashboard
+                          ┌───────────────────────┐
+                          │  Analytics   Predictor │
+                          └───────────────────────┘
 ```
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Database | PostgreSQL 16 |
-| Data Processing | Python · Pandas · NumPy · SQLAlchemy |
-| Modeling | Scikit-Learn · XGBoost · Joblib |
-| API | FastAPI · Uvicorn · Pydantic |
-| Dashboard | Streamlit · Plotly |
-| Containerization | Docker |
-| Testing | Pytest · HTTPX |
-| Notebook | Jupyter · IPyKernel |
+| Layer | Technology | Version |
+|---|---|---|
+| Database | PostgreSQL (Neon Cloud) | 16 |
+| Data Processing | Python · Pandas · NumPy · SQLAlchemy | 2.2.2 |
+| Modeling | Scikit-Learn · XGBoost · Joblib | 1.4.2 / 2.0.3 |
+| API | FastAPI · Uvicorn · Pydantic | 0.111.0 |
+| Dashboard | Streamlit · Plotly | 1.35.0 |
+| Containerization | Docker | 29.3 |
+| Testing | Pytest · HTTPX | 8.2.0 |
 
 ---
 
 ## Model Performance
 
-Three models were trained and evaluated on a stratified 80/20 split with class imbalance handled via `class_weight='balanced'` and `scale_pos_weight`.
+| Model | AUC | Churn Recall | Precision | Status |
+|---|---|---|---|---|
+| **Logistic Regression** | **0.846** | **78%** | 51% | ✅ Selected |
+| XGBoost | 0.821 | 63% | 57% | — |
+| Random Forest | 0.820 | 47% | 65% | — |
 
-| Model | AUC | Churn Recall | Precision |
-|---|---|---|---|
-| **Logistic Regression** ✅ | **0.846** | **78%** | 51% |
-| XGBoost | 0.821 | 63% | 57% |
-| Random Forest | 0.820 | 47% | 65% |
+**Why Logistic Regression?** For a retention engine, churn recall matters most. It is better to flag a loyal customer than miss an at-risk one. LR's 78% recall on churners outperforms tree-based models on this dataset.
 
-**Logistic Regression** was selected as the best model. For a retention engine, **churn recall matters most** — it's better to flag a loyal customer than miss an at-risk one. LR's 78% recall on churners outperforms tree-based models on this dataset.
+---
 
-### Key Churn Drivers (from EDA)
+## Top Churn Drivers
 
 | Feature | Correlation | Insight |
 |---|---|---|
-| `tenure` | −0.352 | Newer customers churn more |
-| `InternetService_Fiber optic` | +0.308 | Fiber users are high risk |
-| `Contract_Two year` | −0.302 | Long-term contracts retain |
-| `PaymentMethod_Electronic check` | +0.302 | E-cheque = high risk signal |
-| `TechSupport / OnlineSecurity` | −0.228 | Add-ons improve retention |
+| `tenure` | −0.352 | New customers churn fast |
+| `InternetService_Fiber optic` | +0.308 | Fiber users pay more, churn more |
+| `Contract_Two year` | −0.302 | Long-term contracts strongly retain |
+| `PaymentMethod_Electronic check` | +0.302 | Top payment risk signal |
+| `TechSupport / OnlineSecurity` | −0.228 | Add-on services retain customers |
 
 ---
 
@@ -95,27 +106,27 @@ Three models were trained and evaluated on a stratified 80/20 split with class i
 ```
 Sentinel/
 ├── data/
-│   ├── WA_Fn-UseC_-Telco-Customer-Churn.csv   ← raw dataset
-│   ├── load_data.py                             ← loads CSV → PostgreSQL
-│   └── clean_data.py                            ← cleans + encodes data
+│   ├── WA_Fn-UseC_-Telco-Customer-Churn.csv
+│   ├── load_data.py          ← CSV → PostgreSQL
+│   └── clean_data.py         ← clean + encode → cleaned_customers
 │
 ├── notebooks/
-│   └── 01_EDA.ipynb                             ← full exploratory analysis
+│   └── 01_EDA.ipynb          ← full exploratory analysis (6 sections)
 │
 ├── src/
-│   ├── model.py                                 ← feature eng + training
-│   ├── app.py                                   ← FastAPI prediction API
-│   ├── best_model.pkl                           ← saved Logistic Regression
-│   └── scaler.pkl                               ← fitted StandardScaler
+│   ├── model.py              ← feature engineering + 3-model training
+│   ├── app.py                ← FastAPI prediction API
+│   ├── best_model.pkl        ← saved Logistic Regression
+│   └── scaler.pkl            ← fitted StandardScaler
 │
 ├── dashboard/
-│   └── streamlit_app.py                         ← analytics dashboard
+│   └── streamlit_app.py      ← B&W analytics dashboard
 │
 ├── tests/
-│   └── test_api.py                              ← API tests
+│   └── test_api.py
 │
 ├── Dockerfile
-├── .env                                         ← DB credentials (not committed)
+├── .env                      ← not committed
 ├── requirements.txt
 └── README.md
 ```
@@ -124,94 +135,64 @@ Sentinel/
 
 ## Quickstart
 
-### 1. Prerequisites
-
-- Python 3.11+
-- PostgreSQL 16 running locally
-- Docker (optional, for containerized deployment)
-
-### 2. Clone & Setup
+### 1. Clone & Setup
 
 ```bash
 git clone https://github.com/yourusername/sentinel.git
 cd sentinel
 
-# Create and activate virtual environment
 python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # Mac/Linux
+.venv\Scripts\activate
 
-# Install dependencies
 pip install -r requirements.txt
-pip install matplotlib seaborn
 ```
 
-### 3. Configure Environment
-
-Create a `.env` file in the project root:
+### 2. Configure Environment
 
 ```env
-DB_HOST=localhost
+DB_HOST=your-neon-host.neon.tech
 DB_PORT=5432
-DB_NAME=sentinel_db
-DB_USER=postgres
+DB_NAME=neondb
+DB_USER=neondb_owner
 DB_PASSWORD=your_password
 ```
 
-> ⚠️ If your password contains `@`, it is automatically URL-encoded in all scripts. No manual changes needed.
-
-### 4. Load & Clean Data
+### 3. Load & Clean Data
 
 ```bash
-# Load raw CSV into PostgreSQL
 python data/load_data.py
-
-# Clean and transform data
 python data/clean_data.py
 ```
 
-This creates two tables in PostgreSQL:
-- `raw_customers` — 7,043 rows, 21 columns
-- `cleaned_customers` — 7,043 rows, 20 columns (encoded, ready for modeling)
-
-### 5. Train the Model
+### 4. Train the Model
 
 ```bash
 python src/model.py
 ```
 
-Outputs:
-- `src/best_model.pkl` — trained Logistic Regression
-- `src/scaler.pkl` — fitted StandardScaler
-- `src/confusion_matrices.png`
-- `src/roc_curves.png`
+Outputs `src/best_model.pkl` and `src/scaler.pkl`.
 
-### 6. Run the API
+### 5. Run the API
 
 ```bash
 uvicorn src.app:app --reload
 ```
 
-API is live at `http://127.0.0.1:8000`
-Swagger UI at `http://127.0.0.1:8000/docs`
+Swagger UI → `http://127.0.0.1:8000/docs`
 
-### 7. Run the Dashboard
+### 6. Run the Dashboard
 
 ```bash
 streamlit run dashboard/streamlit_app.py
 ```
 
-Dashboard at `http://localhost:8501`
+Dashboard → `http://localhost:8501`
 
 ---
 
 ## API Usage
 
-### `POST /predict`
-
-Send a customer profile and receive a churn prediction with probability and risk level.
-
-**Request body:**
+### POST `/predict`
 
 ```json
 {
@@ -248,9 +229,9 @@ Send a customer profile and receive a churn prediction with probability and risk
 }
 ```
 
-**Risk levels:**
+**Risk Levels:**
 
-| Probability | Risk Level |
+| Probability | Risk |
 |---|---|
 | ≥ 70% | High |
 | 40–70% | Medium |
@@ -258,117 +239,97 @@ Send a customer profile and receive a churn prediction with probability and risk
 
 ---
 
-## Docker Deployment
+## Docker
 
 ```bash
-# Build image
 docker build -t sentinel-api .
-
-# Run container
 docker run -p 8000:8000 --env-file .env sentinel-api
 ```
-
-API available at `http://localhost:8000`
 
 ---
 
 ## Dashboard Features
 
 ### Analytics Page
-- **KPI strip** — Total customers · Churned · Retained · Avg churn bill
-- **Churn split** — Donut chart with live percentage
-- **Contract type** — Horizontal bar chart showing churn rate by contract
-- **Tenure distribution** — Overlaid histogram by churn status
-- **Monthly charges** — Box plot comparison (retained vs churned)
-- **Internet service** — Bar chart of churn rate by service type
-- **Payment method** — Horizontal bar sorted by risk
-- **Scatter plot** — Tenure vs MonthlyCharges colored by churn
+- KPI strip — Total · Churned · Retained · Avg churn bill
+- Churn donut chart
+- Churn rate by contract type
+- Tenure distribution by churn
+- Monthly charges box plot
+- Internet service risk bar
+- Payment method risk bar
+- Tenure vs charges scatter plot
 
 ### Predict Page
-- **3-column input form** — Demographics · Services · Billing
-- **Live inference** — Runs model on every prediction click
-- **Churn probability card** — Large % display with risk level badge
-- **Risk gauge** — Plotly gauge chart with B&W gradient
-- **Risk factor breakdown** — Automatic detection of high-risk signals
+- 3-column input form — Demographics · Services · Billing
+- Real-time churn probability
+- Risk gauge (Plotly)
+- Auto-detected risk factor breakdown
 
 ---
 
 ## Feature Engineering
 
-Four engineered features were added before modeling:
-
-| Feature | Description |
-|---|---|
-| `tenure_group` | Binned tenure: 0–1yr, 1–2yr, 2–4yr, 4–6yr |
-| `charges_per_tenure` | `TotalCharges / (tenure + 1)` — spend efficiency |
-| `has_support_services` | Count of TechSupport + OnlineSecurity + OnlineBackup |
-| `is_echeque` | Binary flag for Electronic check payment |
+| Feature | Type | Description |
+|---|---|---|
+| `tenure_group` | Binned | 0–1yr · 1–2yr · 2–4yr · 4–6yr |
+| `charges_per_tenure` | Ratio | TotalCharges / (tenure + 1) |
+| `has_support_services` | Count | TechSupport + OnlineSecurity + OnlineBackup |
+| `is_echeque` | Binary | Electronic check payment flag |
 
 ---
 
 ## EDA Highlights
 
-From `notebooks/01_EDA.ipynb`:
+- Churners average **18 months tenure** vs 38 months for retained
+- Churners pay **$13/month more** on average
+- **Month-to-month** contracts churn at 43% vs 3% for two-year
+- **Fiber optic** churn rate is 42% vs 19% for DSL
+- Class imbalance handled with `class_weight='balanced'`
 
-- Churners have **avg tenure of 18 months** vs 38 months for retained customers
-- Churners pay **$13/month more** on average (74 vs 61)
-- **Month-to-month contracts** have a 43% churn rate vs 3% for two-year contracts
-- **Fiber optic** customers churn at 42% vs 19% for DSL users
-- **Electronic check** payment method has the highest churn rate of all payment types
-- Dataset has a **26.5% churn rate** — handled with `class_weight='balanced'`
+---
+
+## Streamlit Secrets
+
+```toml
+DB_HOST = "your-host.neon.tech"
+DB_PORT = "5432"
+DB_NAME = "neondb"
+DB_USER = "neondb_owner"
+DB_PASSWORD = "your_password"
+```
 
 ---
 
 ## Requirements
 
 ```
-pandas==2.2.2
-numpy==1.26.4
-sqlalchemy==2.0.30
-psycopg2-binary==2.9.9
-scikit-learn==1.4.2
-xgboost==2.0.3
-joblib==1.4.2
-fastapi==0.111.0
-uvicorn==0.29.0
-pydantic==2.7.1
-streamlit==1.35.0
-plotly==5.22.0
-pytest==8.2.0
-httpx==0.27.0
-python-dotenv==1.0.1
-jupyter==1.0.0
-ipykernel==6.29.4
-matplotlib
-seaborn
+pandas==2.2.2          numpy==1.26.4
+sqlalchemy==2.0.30     psycopg2-binary==2.9.9
+scikit-learn==1.4.2    xgboost==2.0.3
+joblib==1.4.2          fastapi==0.111.0
+uvicorn==0.29.0        pydantic==2.7.1
+streamlit==1.35.0      plotly==5.22.0
+pytest==8.2.0          httpx==0.27.0
+python-dotenv==1.0.1   matplotlib==3.9.0
+seaborn==0.13.2
 ```
-
----
-
-## Dataset
-
-**IBM Telco Customer Churn Dataset**
-- Source: [Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
-- 7,043 customers · 21 features · Binary churn label
-- Features include demographics, services subscribed, contract type, billing info
 
 ---
 
 ## Roadmap
 
 - [ ] SHAP explainability for individual predictions
-- [ ] Batch prediction endpoint (`POST /predict/batch`)
+- [ ] Batch prediction endpoint `POST /predict/batch`
 - [ ] Automated retraining pipeline
 - [ ] Email alerts for high-risk customers
-- [ ] Streamlit Cloud deployment
 
 ---
 
-## Author
+<div align="center">
 
-**Manu Naik**
-Built as a portfolio project targeting ₹350–500k CTC roles · June 2026
-
----
+**Manu Naik** · Portfolio project · June 2026 · ₹350–500k CTC target
 
 *Sentinel — Know who's leaving before they do.*
+
+</div>
